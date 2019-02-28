@@ -24,10 +24,8 @@ GPIO.setup(redPin,GPIO.OUT)
 GPIO.setup(buttonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 #SQLite setup
-db = sqlite3.connect('./log/tempLog.db') #Create DB in RAM
+db = sqlite3.connect('./log/tempLog.db')
 cursor = db.cursor() #Get cursor
-#cursor.execute('''CREATE TABLE tempRecord(time TEXT, temperature TEXT)''') 
-#Create Temperature table
 
 db.commit() #Commit Changes
 
@@ -54,6 +52,7 @@ try:
 	with open("./log/templog.csv", "a") as log:
 
 		while True:
+			#BUTTON RETIRED FOR THIS ASSIGNMENT
 			#input_state = GPIO.input(buttonPin)
 			#if input_state == False:
 			for i in range (blinkTime):
@@ -61,6 +60,7 @@ try:
 
 			time.sleep(5)
 			data = readF(tempPin)
+			#DATA WILL BE PRINTED FROM SQL DATABASE
 			#print(data)
 			log.write("{0},{1}\n".format(time.strftime("%Y-%m-%d %H:%M:%S"),str(data)))
 			timeNow = (time.strftime("%Y-%m-%d %H:%M:%S"))

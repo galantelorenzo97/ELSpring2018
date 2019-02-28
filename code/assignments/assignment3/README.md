@@ -92,4 +92,9 @@ for row in all_rows:
 	print('{0} : {1}'.format(str(row[0]), row[1],))
 ```
 
+10. Add a close command at the end of your program, at the point where you want the database closed.
+```python
+db.close()
+```
+
 # END
