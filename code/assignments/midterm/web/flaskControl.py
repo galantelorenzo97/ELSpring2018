@@ -7,26 +7,26 @@ import json
 
 app = Flask(__name__)
 
-# get most recent temp
+# get most recent count
 @app.route("/")
 def index():
-    db = sqlite3.connect('./log/tempdata.db')
+    db = sqlite3.connect('../logPeople/peopleLog.db')
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM tempFormat")
+    cursor.execute("SELECT * FROM peopleLog")
     result = cursor.fetchone()
-    print(result[0])
-    temperature = result[0]
-    return render_template('index.html', temperature = temperature)
+    print(result[2])
+    peopleCount = result[2]
+    return render_template('index.html', peopleCount = peopleCount)
 
 
-# get the temp data from database
+# get the people data from database
 @app.route("/catch")
 def data():
-    db = sqlite3.connect('./log/tempdata.db')
+    db = sqlite3.connect('../log/peopleLog.db')
     db.row_factory = sqlite3.Row
 
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM tempFormat")
+    cursor.execute("SELECT * FROM peopleLog")
 
     entry = cursor.fetchall()
     data = []
