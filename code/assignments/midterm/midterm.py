@@ -80,4 +80,4 @@ except db.Error, e:
 except KeyboardInterrupt:
         GPIO.cleanup()
         db.close()
-        print('Motion was detected and recorded!!!')
+        print('Clean exit')

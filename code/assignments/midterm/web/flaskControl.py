@@ -7,7 +7,7 @@ import json
 
 app = Flask(__name__)
 
-# get most recent temp
+# get most recent count
 @app.route("/")
 def index():
     db = sqlite3.connect('../logPeople/peopleLog.db')
@@ -19,7 +19,7 @@ def index():
     return render_template('index.html', temperature = temperature)
 
 
-# get the temp data from database
+# get the most recent data
 @app.route("/catch")
 def data():
     db = sqlite3.connect('../log/peopleLog.db')
