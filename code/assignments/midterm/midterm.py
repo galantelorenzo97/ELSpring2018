@@ -58,15 +58,12 @@ try:
 			if timeStamp:
 				inOrOut = "Entrance"
 				peopleCount = peopleCount + 1
-				time.sleep(10)
-				continue
+				
 		if GPIO.input(exitSensor):
 			timeStamp = bothTriggers(entrySensor)
 			if timeStamp:
 				inOrOut = "Exit"
 				peopleCount = peopleCount - 1
-				time.sleep(10)
-				continue
 
 #Since the timeStamp is only set when the direction is determined and both sensors are triggered we use that as the condition to write our data:
 		if timeStamp:
