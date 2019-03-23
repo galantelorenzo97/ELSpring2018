@@ -15,7 +15,6 @@ def index():
     cursor.execute("SELECT * FROM peopleLog")
     result = cursor.fetchone()
     print(result[2])
-    temperature = result[2]
     return render_template('index.html')
 
 
@@ -38,10 +37,10 @@ def data():
 #get number of database entries
 @app.route("/count")
 def dbcount():
-    con = sqlite3.connect('../logPeople/peopleLog.db')
-    cur = con.cursor()
-    cur.execute("SELECT count(*) from peopleLog")
-    count = cur.fetchall()
+    db = sqlite3.connect('../logPeople/peopleLog.db')
+    cursor = db.cursor()
+    cursor.execute("SELECT count(*) from peopleLog")
+    count = cursor.fetchall()
     return Response(json.dumps({"data" : count[0][0]}), mimetype='application/json')
 
 
