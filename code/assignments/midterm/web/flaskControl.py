@@ -14,9 +14,9 @@ def index():
     cursor = db.cursor()
     cursor.execute("SELECT * FROM peopleLog")
     result = cursor.fetchone()
-    print(result[0])
-    temperature = result[0]
-    return render_template('index.html', temperature = temperature)
+    print(result[2])
+    temperature = result[2]
+    return render_template('index.html')
 
 
 # get the most recent data
@@ -26,7 +26,7 @@ def data():
     db.row_factory = sqlite3.Row
 
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM peopleLog")
+    cursor.execute("SELECT * FROM peopleLog LIMIT 10")
 
     entry = cursor.fetchall()
     data = []
@@ -34,6 +34,15 @@ def data():
         data.append(list(row))
 
     return Response(json.dumps(data),  mimetype='application/json')
+
+#get number of database entries
+@app.route("/count")
+def dbcount():
+    con = mydb.connect("motion.db")
+    cur = con.cursor()
+    cur.execute("SELECT count(*) from inAndOut")
+    count = cur.fetchall()
+    return Response(json.dumps({"data" : count[0][0]}), mimetype='application/json')
 
 
 if __name__ == "__main__":
