@@ -62,6 +62,8 @@ try:
 			if timeStamp:
 				inOrOut = "Exit"
 				peopleCount = peopleCount - 1
+		
+		return TimeStamp
 
 #Since the timeStamp is only set when the direction is determined and both sensors are triggered we use that as the condition to write our data:
 		if timeStamp:
