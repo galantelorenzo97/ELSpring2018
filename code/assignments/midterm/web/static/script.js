@@ -13,11 +13,12 @@ function createTables() {
     
     var head = $('<tr></tr>').attr({ class: ['head'].join(' ')}).appendTo(timeTable);
 		$('<td></td>').text('IN TIME').appendTo(head);
-		$('<td></td>').text('Total amount in').appendTo(head);	
+		$('<td></td>').text('Type').appendTo(head);
+		$('<td></td>').text('Total people').appendTo(head);	
 
 	count = 0;
 	var total_in_room = data[0][2];
-	var trace = {x:[], y:[], z:[], name:'TIME', type:'bar'}
+	var trace = {x:[], y:[], name:'TIME', type:'bar'}
 
 	$("#timeTable tr").remove();
 	$("#count").remove();
@@ -27,10 +28,10 @@ function createTables() {
 			row.appendTo(timeTable)
 			$('<td></td>').text(data[line][0]).appendTo(row);
 			$('<td></td>').text(data[line][1]).appendTo(row);
-		
-		        trace.x.push(data[line][0])
-            	trace.y.push(data[line][1])
-                trace.z.push(data[line][2])
+			$('<td></td>').text(data[line][2]).appendTo(row);
+
+	        trace.x.push(data[line][0])
+            	trace.y.push(data[line][2])
 
 		console.log(data[line]);
 		count++;            
