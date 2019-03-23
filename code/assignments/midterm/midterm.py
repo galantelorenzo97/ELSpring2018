@@ -50,13 +50,13 @@ try:
 		#set entry Type
 		inOrOut = "IDLE"
         
-        if GPIO.input(hallPin):
-			timeStamp = bothTriggers(roomPin)
+        if GPIO.input(entrySensor):
+			timeStamp = bothTriggers(exitSensor)
 			if timeStamp:
 				inOrOut = "Entrance"
 				peopleCount = peopleCount + 1
-		if GPIO.input(roomPin):
-			timeStamp = bothTriggers(hallPin)
+		if GPIO.input(exitSensor):
+			timeStamp = bothTrigger(entrySensor)
 			if timeStamp:
 				inOrOut = "Exit"
 				peopleCount = peopleCount - 1
