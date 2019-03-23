@@ -34,11 +34,10 @@ def bothTriggers(trigger2, wait=5):
 	while not GPIO.input(trigger2):
 		if time.time() - timeCheck > wait:
         		break
-       	        continue
-		if time.time() - timeCheck <= wait:
-        		timeStamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        		time.sleep(4)
-        	continue
+		continue
+	if time.time() - timeCheck <= wait:
+        	timeStamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        	time.sleep(4)
 	return timeStamp
 
 #Stabilize sensor
