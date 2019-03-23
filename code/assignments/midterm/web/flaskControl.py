@@ -22,7 +22,7 @@ def index():
 # get the most recent data
 @app.route("/catch")
 def data():
-    db = sqlite3.connect('../log/peopleLog.db')
+    db = sqlite3.connect('../logPeople/peopleLog.db')
     db.row_factory = sqlite3.Row
 
     cursor = db.cursor()
@@ -38,9 +38,9 @@ def data():
 #get number of database entries
 @app.route("/count")
 def dbcount():
-    con = mydb.connect("motion.db")
+    con = sqlite3.connect('../logPeople/peopleLog.db')
     cur = con.cursor()
-    cur.execute("SELECT count(*) from inAndOut")
+    cur.execute("SELECT count(*) from peopleLog")
     count = cur.fetchall()
     return Response(json.dumps({"data" : count[0][0]}), mimetype='application/json')
 
