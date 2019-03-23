@@ -39,6 +39,7 @@ def bothTriggers(trigger2, wait=5):
         		timeStamp = time.strftime("%Y-%m-%d %H:%M:%S")
         		time.sleep(4)
         	continue
+	return timeStamp
 
 #Stabilize sensor
 time.sleep(10)
@@ -52,18 +53,20 @@ try:
 		#set entry Type
 		inOrOut = "IDLE"
 
-        	if GPIO.input(entrySensor):
+        if GPIO.input(entrySensor):
 			timeStamp = bothTriggers(exitSensor)
 			if timeStamp:
 				inOrOut = "Entrance"
 				peopleCount = peopleCount + 1
+				time.sleep(10)
+				continue
 		if GPIO.input(exitSensor):
 			timeStamp = bothTriggers(entrySensor)
 			if timeStamp:
 				inOrOut = "Exit"
 				peopleCount = peopleCount - 1
-		
-		return TimeStamp
+				time.sleep(10)
+				continue
 
 #Since the timeStamp is only set when the direction is determined and both sensors are triggered we use that as the condition to write our data:
 		if timeStamp:
