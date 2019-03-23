@@ -1,80 +1,80 @@
 #Import Libraries we will be using
 import RPi.GPIO as GPIO
-import Adafruit_DHT
 import time
 import os
 import sqlite3
+import sys
 
 #Assign GPIO pins
-redPin = 27
-tempPin = 17
-buttonPin = 26
+entrySensor = 13
+exitSensor = 26
 
-#Temp and Humidity Sensor
-tempSensor = Adafruit_DHT.DHT11
-#LED Variables--------------------------------------------------------
-#Duration of each Blink
-blinkDur = .1
-#Number of times to Blink the LED
-blinkTime = 7
+#Stabilization time
+stableTime = 5
 #---------------------------------------------------------------------
 #Initialize the GPIO
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(redPin,GPIO.OUT)
-GPIO.setup(buttonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(entrySensor, GPIO.IN)
+GPIO.setup(exitSensor, GPIO.IN)
 
 #SQLite setup
-db = sqlite3.connect('./log/tempLog.db')
+db = sqlite3.connect('./logPeople/peopleLog.db')
 cursor = db.cursor() #Get cursor
-
 db.commit() #Commit Changes
 
+#Using Simon's code
 
+def bothTriggers(trigger2, wait=5):
+	timeStamp = False
+	#This is the sanity check.  If the second sensor isn't triggered, it resets.
+	#The sanity check only happens while the second sensor is in a low state (not triggered)
+	timeCheck = time.time()
+	while not GPIO.input(trigger2):
+		if time.time() - timeCheck > wait:
+            break
+        continue
+	if time.time() - timeCheck <= wait:
+        timeStamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        time.sleep(4)
+        continue
 
-def oneBlink(pin):
-	GPIO.output(pin,True)
-	time.sleep(blinkDur)
-	GPIO.output(pin,False)
-	time.sleep(blinkDur)
-
-def readF(tempPin):
-	humidity, temperature = Adafruit_DHT.read_retry(tempSensor, tempPin)
-	temperature = temperature * 9/5.0 +32
-	if humidity is not None and temperature is not None:
-		tempFahr = '{0:0.1f}*F'.format(temperature)
-	else:
-		print('Error Reading Sensor')
-
-	return tempFahr
+#Stabilize sensor
+time.sleep(10)
+#Initialize people in room
+peopleCount = 0
 
 try:
+	while True:
+		#Reset timeStamp to false to prevent writing data until both sensors are triggered again
+		timeStamp = False
+		#set entry Type
+		inOrOut = "IDLE"
+        
+        if GPIO.input(hallPin):
+			timeStamp = bothTriggers(roomPin)
+			if timeStamp:
+				inOrOut = "Entrance"
+				peopleCount = peopleCount + 1
+		if GPIO.input(roomPin):
+			timeStamp = bothTriggers(hallPin)
+			if timeStamp:
+				inOrOut = "Exit"
+				peopleCount = peopleCount - 1
 
-	with open("./log/templog.csv", "a") as log:
-
-		while True:
-			#BUTTON RETIRED FOR THIS ASSIGNMENT
-			#input_state = GPIO.input(buttonPin)
-			#if input_state == False:
-			for i in range (blinkTime):
-				oneBlink(redPin)
-
-			time.sleep(5)
-			data = readF(tempPin)
-			#DATA WILL BE PRINTED FROM SQL DATABASE
-			#print(data)
-			log.write("{0},{1}\n".format(time.strftime("%Y-%m-%d %H:%M:%S"),str(data)))
-			timeNow = (time.strftime("%Y-%m-%d %H:%M:%S"))
-			cursor.execute('''INSERT INTO tempRecord VALUES(?,?)''', (timeNow, str(data)))
+#Since the timeStamp is only set when the direction is determined and both sensors are triggered we use that as the condition to write our data:
+		if timeStamp:
+			cursor.execute('''INSERT INTO peopleLog VALUES(?,?,?)''', (timeStamp, inOrOut, peopleCount))
 			db.commit()
-			all_rows = cursor.execute('''SELECT * FROM tempRecord''')
+			all_rows = cursor.execute('''SELECT * FROM peopleLog''')
 			os.system('clear')
 			for row in all_rows:
-				print('{0} : {1}'.format(str(row[0]), row[1],))
-			#END
+				print('{0} : {1} : {2}'.format(str(row[0]), row[1], str(row[2])))
 
+except mydb.Error, e:
+	print "Error %s:" %e.args[0]
+	sys.exit(1)
 
 except KeyboardInterrupt:
-	os.system('clear')
-	print('Thanks for Blinking and Thinking!')
-	GPIO.cleanup()
-	db.close()
+        GPIO.cleanup()
+        con.close()
+        print('Exited Cleanly')
