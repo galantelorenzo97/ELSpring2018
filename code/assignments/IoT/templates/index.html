@@ -24,7 +24,7 @@
     <canvas class="center" id="foo"></canvas>
 
     <!-- plot graph -->
-    <div class="center_graph" id="myGraph"></div>
+    <!-- <div class="center_graph" id="myGraph"></div> -->
 
 
     <!-- the gauge -->
@@ -73,7 +73,7 @@
         gauge.maxValue = 120; // max gauge value
         gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
         gauge.animationSpeed = 22; // Animation speed
-        gauge.set( {{ temp }} ); // Set actual value
+        gauge.set( {{ temperature }} ); // Set actual value
         
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='script.js')}}"></script>    

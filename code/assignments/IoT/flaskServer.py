@@ -14,8 +14,8 @@ def index():
     cursor = db.cursor()
     cursor.execute("SELECT * FROM tempRecord")
     result = cursor.fetchone()
-    print(result[0])
-    temperature = result[0]
+    print(result[1])
+    temperature = result[1]
     return render_template('index.html', temperature = temperature)
 
 
