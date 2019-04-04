@@ -65,7 +65,7 @@ try:
 
 #Since the timeStamp is only set when the direction is determined and both sensors are triggered we use that as the condition to write our data:
 		if timeStamp:
-			cursor.execute('''INSERT INTO logPeople VALUES(?,?,?)''', (timeStamp, inOrOut, peopleCount))
+			cursor.execute('''INSERT INTO peopleLog VALUES(?,?,?)''', (timeStamp, inOrOut, peopleCount))
 			db.commit()
 			all_rows = cursor.execute('''SELECT * FROM peopleLog''')
 			os.system('clear')
