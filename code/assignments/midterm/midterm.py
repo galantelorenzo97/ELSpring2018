@@ -32,17 +32,16 @@ print "Stabilizing..."
 time.sleep(3)
 print "Sensor stabilized!"
 
-#Initiate ultrasound bursts using 10us pulse
-GPIO.output(TRIG, True)
-time.sleep(0.00001)
-GPIO.output(TRIG, False)
-
-def logToDatabase(doorState)
-	timeStamp = time.time()
+def logToDatabase(doorState):
+	timeStamp = (time.strftime("%Y-%m-%d %H:%M:%S"))
 	cursor.execute('''INSERT INTO doorLog VALUES(?,?)''', (timeStamp, doorState))
 	db.commit()
 
-def getDistance()
+def getDistance():
+	GPIO.output(TRIG, True)
+	time.sleep(0.00001)
+	GPIO.output(TRIG, False)
+
 	while GPIO.input(ECHO)==0:
 		pulse_start = time.time()
 
@@ -50,11 +49,8 @@ def getDistance()
 		pulse_end = time.time()
 
 	pulse_duration = pulse_end - pulse_start
-
 	distance = pulse_duration * 17150
-
 	distance = round(distance, 2)
-
 	return distance
 
 
@@ -63,6 +59,7 @@ try:
      		if not doorOpen:
 			dist = getDistance()
 			if dist < 15.0:
+				print("Door opened")
 				logToDatabase("open")
 				doorOpen = True
 				time.sleep(5)
@@ -70,31 +67,19 @@ try:
 		if doorOpen:
 			dist = getDistance()
 			if dist > 15.0:
+				print("Door closed")
 				logToDatabase("closed")
 				doorOpen = False
 				time.sleep(5)
 				continue
 		time.sleep(5)
 
-#Since the timeStamp is only set when the direction is determined and both sensors are triggered we use that as the condition to write our data:
-#		if timeStamp:
-#			db.commit()
-#			all_rows = cursor.execute('''SELECT * FROM peopleLog''')
-#			os.system('clear')
-#			for row in all_rows:
-#				print('{0} : {1} : {2}'.format(str(row[0]), row[1], str(row[2])))
-
-
-
-
-
-
-
 except db.Error, e:
 	print "Error %s:" %e.args[0]
 	sys.exit(1)
 
 except KeyboardInterrupt:
-GPIO.cleanup()
-       db.close()
-       print('Clean exit')
+	GPIO.cleanup()
+	db.close()
+	print('Clean exit')
+
