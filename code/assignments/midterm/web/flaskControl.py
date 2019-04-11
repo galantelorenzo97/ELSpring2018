@@ -10,22 +10,22 @@ app = Flask(__name__)
 # get most recent count
 @app.route("/")
 def index():
-    db = sqlite3.connect('../logPeople/peopleLog.db')
+    db = sqlite3.connect('../doorLog/doorLog.db')
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM peopleLog")
+    cursor.execute("SELECT * FROM doorLog")
     result = cursor.fetchone()
-    print(result[2])
+    print(result[1])
     return render_template('index.html')
 
 
 # get the most recent data
 @app.route("/catch")
 def data():
-    db = sqlite3.connect('../logPeople/peopleLog.db')
+    db = sqlite3.connect('../doorLog/doorLog.db')
     db.row_factory = sqlite3.Row
 
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM peopleLog LIMIT 10")
+    cursor.execute("SELECT * FROM doorLog LIMIT 10")
 
     entry = cursor.fetchall()
     data = []
@@ -37,9 +37,9 @@ def data():
 #get number of database entries
 @app.route("/count")
 def dbcount():
-    db = sqlite3.connect('../logPeople/peopleLog.db')
+    db = sqlite3.connect('../doorLog/doorLog.db')
     cursor = db.cursor()
-    cursor.execute("SELECT count(*) from peopleLog")
+    cursor.execute("SELECT count(*) from doorLog")
     count = cursor.fetchall()
     return Response(json.dumps({"data" : count[0][0]}), mimetype='application/json')
 
