@@ -18,7 +18,7 @@ function createTables() {
 	state = "";
 	var total_in_room = data[0][2];
 
-	$("doorTable tr").remove();
+	$("#doorTable table").remove();
 	$("#count").remove();
 
 	for (var line in data) {
@@ -32,7 +32,10 @@ function createTables() {
 		count++;            
         }
     
-    var count = $("<h1></h1>").text("Current state: " + "").attr({id: '#count'}).appendTo("#table");
-	doorTable.appendTo("#doorTable")
+    	var count = $("<h1></h1>").text("Current state: " + data[0][0] + " " + data[0][1]).attr({id: '#count'});
+	
+	count.appendTo("#doorDiv");
+	
+	doorTable.appendTo("#doorDiv")
     })
 }
