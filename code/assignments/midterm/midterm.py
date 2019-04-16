@@ -34,7 +34,8 @@ print "Sensor stabilized!"
 
 def logToDatabase(doorState):
 	timeStamp = (time.strftime("%Y-%m-%d %H:%M:%S"))
-	cursor.execute('''INSERT INTO doorLog VALUES(?,?)''', (timeStamp, doorState))
+	uTime = int(time.time())
+	cursor.execute('''INSERT INTO doorLog VALUES(?,?,?)''', (timeStamp, doorState, uTime))
 	db.commit()
 
 def getDistance():

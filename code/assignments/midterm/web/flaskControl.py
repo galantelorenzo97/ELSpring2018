@@ -17,6 +17,11 @@ def index():
     print(result[1])
     return render_template('index.html')
 
+#serve search.html if requested
+@app.route("/search")
+def search():
+    return render_template('search.html')
+
 
 # get the most recent data
 @app.route("/catch")
@@ -25,7 +30,7 @@ def data():
     db.row_factory = sqlite3.Row
 
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM doorLog LIMIT 10")
+    cursor.execute("SELECT * FROM doorLog ORDER BY Date DESC LIMIT 10")
 
     entry = cursor.fetchall()
     data = []
