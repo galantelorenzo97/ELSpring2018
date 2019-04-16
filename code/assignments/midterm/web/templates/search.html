@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <title>Lorenzo's midterm - Search</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    
+    <link type="text/css" href="https://cdn.jsdelivr.net/npm/timepicker@1.11.14/jquery.timepicker.css">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+    <form id="searchForm">
+        Search (Format HH:MM:SS):<br>
+        <input type="number" name="timeHours" id="timeH">
+        <input type="number" name="timeMinutes" id="timeM">
+        <input type="number" name="timeSeconds" id="timeS">
+	<br>
+
+    </form>
+
+    <button onclick="search()">Search</button>
+            
+    <script type="text/javascript" src="{{ url_for('static', filename='searchScript.js')}}"></script>
+</body>
+
+</html>
