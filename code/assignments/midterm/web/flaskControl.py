@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 
-from flask import Flask, render_template, jsonify, Response
+from flask import Flask, render_template, jsonify, Response, request
 import sqlite3
 import json
 
@@ -51,6 +51,7 @@ def dbcount():
 #Get closest database entry
 @app.route("/searchResults", methods = ['POST', 'GET'])
 def searchRes():
+    nixTime = request.args.get('nixTime')
     db = sqlite3.connect('../doorLog/doorLog.db')
     cursor = db.cursor()
 
