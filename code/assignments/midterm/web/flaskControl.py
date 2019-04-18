@@ -48,6 +48,16 @@ def dbcount():
     count = cursor.fetchall()
     return Response(json.dumps({"data" : count[0][0]}), mimetype='application/json')
 
+#Get closest database entry
+@app.route("/searchResults", methods = ['POST', 'GET'])
+def searchRes():
+    db = sqlite3.connect('../doorLog/doorLog.db')
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM doorLog ORDER BY Date DESC WHERE UnixTime < " + nixTime + " LIMIT 1")
+    recEntry = cursor.fetchone()
+
+    return jsonify(recEntry);
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=False)

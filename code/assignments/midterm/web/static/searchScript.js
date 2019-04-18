@@ -16,7 +16,11 @@ function search()
 
 	console.log(uDateToSearch);
 
-	var sqlStr = "SELECT * FROM doorLog WHERE UnixTime <= " + uDateToSearch + " LIMIT 1";
+	$.getJSON('/searchResults?nixTime=' + uDateToSearch, function(data) {
+		var push = $("<h1></h1>").text("Result :" + data).attr({id: '#push'});
+		push.appendTo("#resultShower");
+	})
+
 	//var res = db.exec(sqlStr);
 
 	//console.log(res);
